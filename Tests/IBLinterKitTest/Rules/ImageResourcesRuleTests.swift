@@ -20,4 +20,24 @@ class ImageResourcesRuleTests: XCTestCase {
         let violations = try! rule.validate(storyboard: StoryboardFile(url: url))
         XCTAssertEqual(violations.count, 3)
     }
+
+    func testPerformance_enum() {
+        let assetURL = fixture.path("Resources/Rules/ImageResourcesRule/Media.xcassets")
+        let catalog = AssetsCatalog(path: assetURL.path)
+        measure {
+            for _ in 0..<1000 {
+                _ = catalog.entryValues(for: .imageSet)
+            }
+        }
+    }
+    
+    func testPerformance_fixed() {
+        let assetURL = fixture.path("Resources/Rules/ImageResourcesRule/Media.xcassets")
+        let catalog = AssetsCatalog(path: assetURL.path)
+        measure {
+            for _ in 0..<1000 {
+                _ = catalog.imageValues
+            }
+        }
+    }
 }

@@ -31,6 +31,10 @@ extension AssetsCatalog {
         return entries.flatMap { $0.values(for: item) }
     }
 
+    var imageValues: [String] {
+        return entries.flatMap { $0.imageValues }
+    }
+
     private enum Constants {
         static let path = "Contents.json"
         static let properties = "properties"
@@ -101,6 +105,18 @@ extension AssetsCatalog {
             case .image(_, let value):
                 return item == .imageSet ? [value] : []
             }
+        }
+
+        fileprivate var imageValues: [String] {
+            switch self {
+            case .group(_, let items):
+                return items.flatMap { $0.imageValues }
+            case .color:
+                return []
+            case .image(_, let value):
+                return [value]
+            }
+
         }
     }
 }
